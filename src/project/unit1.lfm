@@ -1,0 +1,71 @@
+object LuiForm1: TLuiForm1
+  Left = 720
+  Top = 306
+  Width = 320
+  Height = 240
+  Visible = False
+  Caption = 'MyForm1'
+  object MyButton1: TLuiButton
+    Left = 19
+    Top = 12
+    Width = 64
+    Height = 25
+    Visible = False
+    Caption = 'MyButton1'
+  end
+  object MyButton2: TLuiButton
+    Left = 19
+    Top = 100
+    Width = 91
+    Height = 25
+    Visible = False
+    Caption = 'MyButton2'
+  end
+  object MyGroupBox1: TLuiGroupBox
+    Left = 123
+    Top = 20
+    Width = 145
+    Height = 120
+    Visible = False
+    BorderLeft = 25
+    Caption = 'MyGroupBox1'
+    object MyGroupBox2: TLuiGroupBox
+      Left = 23
+      Top = 15
+      Width = 101
+      Height = 53
+      Visible = False
+      Caption = 'MyGroupBox2'
+    end
+  end
+  object MyButton3: TLuiButton
+    Left = 28
+    Top = 28
+    Width = 91
+    Height = 25
+    Visible = False
+    Caption = 'MyButton2'
+    Left = 28
+    Top = 28
+  end
+  object MyButton4: TLuiButton
+    Left = 28
+    Top = 28
+    Width = 91
+    Height = 25
+    Visible = False
+    Caption = 'MyButton2'
+    Left = 56
+    Top = 56
+  end
+  object MyButton5: TLuiButton
+    Left = 28
+    Top = 28
+    Width = 91
+    Height = 25
+    Visible = False
+    Caption = 'MyButton2'
+    Left = 84
+    Top = 84
+  end
+end
