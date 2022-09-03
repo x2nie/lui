@@ -113,6 +113,7 @@ type
     procedure InternalInvalidateRect(ARect: TRect; Erase: boolean); override;
   public
     constructor Create(AOwner: TComponent); override;
+    constructor CreateNew(AOwner: TComponent); virtual;
     property Designer: ILuiWidgetDesigner read FDesigner write FDesigner;
   end;
 
@@ -321,7 +322,18 @@ end;
 
 constructor TLuiForm.Create(AOwner: TComponent);
 begin
+  CreateNew(AOwner);
+  if (ClassType<>TLuiForm) and ([csDesignInstance, csDesigning]*ComponentState=[]) then
+  begin
+    if not InitInheritedComponent(Self, TLuiForm) then
+      //raise EResNotFound.CreateFmt(rsResourceNotFound, [ClassName]);
+  end;
+end;
+
+constructor TLuiForm.CreateNew(AOwner: TComponent);
+begin
   inherited Create(AOwner);
+  { default props here }
 end;
 
 { TLuiButton }

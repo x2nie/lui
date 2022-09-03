@@ -3,7 +3,6 @@
   <Package Version="5">
     <Name Value="LUI_Designer"/>
     <Type Value="RunAndDesignTime"/>
-    <AddToProjectUsesSection Value="True"/>
     <Author Value="x2nie - Fathony L"/>
     <CompilerOptions>
       <Version Value="11"/>
@@ -15,6 +14,11 @@
           <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
+      <CodeGeneration>
+        <Optimizations>
+          <OptimizationLevel Value="0"/>
+        </Optimizations>
+      </CodeGeneration>
     </CompilerOptions>
     <Version Minor="1"/>
     <Files Count="3">

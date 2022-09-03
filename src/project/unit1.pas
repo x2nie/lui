@@ -30,7 +30,7 @@ var
 
 implementation
 
-{$R unit1.lfm}
+{$R *.lfm}
 
 end.
 

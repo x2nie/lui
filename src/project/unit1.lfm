@@ -6,8 +6,8 @@ object LuiForm1: TLuiForm1
   Visible = False
   Caption = 'MyForm1'
   object MyButton1: TLuiButton
-    Left = 19
-    Top = 12
+    Left = 11
+    Top = 17
     Width = 64
     Height = 25
     Visible = False
@@ -23,7 +23,7 @@ object LuiForm1: TLuiForm1
   end
   object MyGroupBox1: TLuiGroupBox
     Left = 123
-    Top = 20
+    Top = 17
     Width = 145
     Height = 120
     Visible = False
@@ -45,27 +45,21 @@ object LuiForm1: TLuiForm1
     Height = 25
     Visible = False
     Caption = 'MyButton2'
-    Left = 28
-    Top = 28
   end
   object MyButton4: TLuiButton
-    Left = 28
-    Top = 28
-    Width = 91
-    Height = 25
-    Visible = False
-    Caption = 'MyButton2'
     Left = 56
     Top = 56
-  end
-  object MyButton5: TLuiButton
-    Left = 28
-    Top = 28
     Width = 91
     Height = 25
     Visible = False
     Caption = 'MyButton2'
-    Left = 84
+  end
+  object MyButton5: TLuiButton
+    Left = 59
     Top = 84
+    Width = 91
+    Height = 25
+    Visible = False
+    Caption = 'MyButton2'
   end
 end
