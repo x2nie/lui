@@ -21,7 +21,7 @@
       </CodeGeneration>
     </CompilerOptions>
     <Version Minor="1"/>
-    <Files Count="3">
+    <Files Count="2">
       <Item1>
         <Filename Value="README.txt"/>
         <Type Value="Text"/>
@@ -29,22 +29,21 @@
       <Item2>
         <Filename Value="lui_formdesigner.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="lui_formdesigner"/>
+        <UnitName Value="Lui_FormDesigner"/>
       </Item2>
-      <Item3>
-        <Filename Value="lui_beta.pas"/>
-        <UnitName Value="Lui_beta"/>
-      </Item3>
     </Files>
     <CompatibilityMode Value="True"/>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="IDEIntf"/>
+        <PackageName Value="LUI_Runtime"/>
       </Item1>
       <Item2>
+        <PackageName Value="IDEIntf"/>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item2>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

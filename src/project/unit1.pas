@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, Lui_beta, LResources;
+  Classes, SysUtils, Lui_beta;
 
 type
 
