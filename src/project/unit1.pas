@@ -12,8 +12,10 @@ type
   { TLuiForm1 }
 
   TLuiForm1 = class(TLuiForm)
+    Button1: TButton;
     MyButton1: TLuiButton;
     MyButton2: TLuiButton;
+    Button3: TLuiButton;
     MyButton3: TLuiButton;
     MyButton4: TLuiButton;
     MyButton5: TLuiButton;

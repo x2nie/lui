@@ -8,7 +8,7 @@ unit LUI_Designer;
 interface
 
 uses
-  Lui_FormDesigner, LazarusPackageIntf;
+  Lui_FormDesigner, lui_design_canvas, LazarusPackageIntf;
 
 implementation
 

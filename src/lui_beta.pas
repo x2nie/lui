@@ -37,12 +37,32 @@ unit Lui_beta;
 interface
 
 uses
-  Classes, SysUtils, Math, types;
+  Classes, SysUtils, Math, types, GraphType, FPCanvas;
 
 type
   ILuiWidgetDesigner = interface(IUnknown)
     procedure InvalidateRect(Sender: TObject; ARect: TRect; Erase: boolean);
   end;
+
+  TColor = TGraphicsColor;
+
+  //TLuiCanvas = class(TFPCustomCanvas)
+  TLuiCanvas = class(TPersistent)
+  private
+    FColor: TColor;
+    FOnchange: TNotifyEvent;
+    procedure SetColor(AValue: TColor);
+  protected
+    procedure DoChanged; virtual;
+  public
+    constructor Create; virtual;
+    procedure FillRect(l,t,w,h:integer); virtual; abstract;
+    procedure Rectangle(l,t,w,h:integer); virtual; abstract;
+    procedure Line (x1,y1,x2,y2:integer);  virtual; abstract;
+    property OnChange: TNotifyEvent read FOnchange write FOnchange;
+    property Color : TColor read FColor write SetColor;
+  end;
+  TLuiCanvasClass = class of TLuiCanvas;
 
   { TLuiWidget }
 
@@ -53,6 +73,7 @@ type
     FBorderLeft: integer;
     FBorderRight: integer;
     FBorderTop: integer;
+    FCanvas: TLuiCanvas;
     FCaption: string;
     FChilds: TFPList; // list of TLuiWidget
     FHeight: integer;
@@ -78,6 +99,7 @@ type
     procedure SetName(const NewName: TComponentName); override;
     procedure SetParentComponent(Value: TComponent); override;
     procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
+    procedure HandlePaint; virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -89,6 +111,7 @@ type
     procedure SetBounds(NewLeft, NewTop, NewWidth, NewHeight: integer); virtual;
     procedure InvalidateRect(ARect: TRect; Erase: boolean);
     procedure Invalidate;
+    property Canvas: TLuiCanvas read FCanvas write FCanvas;
     property AcceptChildrenAtDesignTime: boolean read FAcceptChildrenAtDesignTime;
   published
     property Left: integer read FLeft write SetLeft;
@@ -111,6 +134,7 @@ type
     FDesigner: ILuiWidgetDesigner;
   protected
     procedure InternalInvalidateRect(ARect: TRect; Erase: boolean); override;
+    procedure HandlePaint; override;
   public
     constructor Create(AOwner: TComponent); override;
     constructor CreateNew(AOwner: TComponent); virtual;
@@ -125,13 +149,80 @@ type
     constructor Create(AOwner: TComponent); override;
   end;
 
+  TButton = class(TLuiButton)
+  end;
+
   { TLuiGroupBox
     A widget that does allow children at design time }
 
   TLuiGroupBox = class(TLuiWidget)
   end;
 
+  const
+    // The following colors match the predefined Delphi Colors
+
+    // standard colors
+    clBlack   = TColor($000000);
+    clMaroon  = TColor($000080);
+    clGreen   = TColor($008000);
+    clOlive   = TColor($008080);
+    clNavy    = TColor($800000);
+    clPurple  = TColor($800080);
+    clTeal    = TColor($808000);
+    clGray    = TColor($808080);
+    clSilver  = TColor($C0C0C0);
+    clRed     = TColor($0000FF);
+    clLime    = TColor($00FF00);
+    clYellow  = TColor($00FFFF);
+    clBlue    = TColor($FF0000);
+    clFuchsia = TColor($FF00FF);
+    clAqua    = TColor($FFFF00);
+    clLtGray  = TColor($C0C0C0); // clSilver alias
+    clDkGray  = TColor($808080); // clGray alias
+    clWhite   = TColor($FFFFFF);
+    StandardColorsCount = 16;
+
+    // extended colors
+    clMoneyGreen = TColor($C0DCC0);
+    clSkyBlue    = TColor($F0CAA6);
+    clCream      = TColor($F0FBFF);
+    //clMedGray    = TColor($A4A0A0);
+    ExtendedColorCount = 4;
+
+    // special colors
+    clNone    = TColor($1FFFFFFF);
+    clDefault = TColor($20000000);
+
+    clMedGray = TColor($d5d2cd);
+
+
+  { Canvas Intercept }
+type
+  TLuiCanvasCreator = function():TLuiCanvas;
+var
+  LuiCanvasCreatorProc : TLuiCanvasCreator = nil;
+
 implementation
+
+{ TLuiCanvas }
+
+procedure TLuiCanvas.SetColor(AValue: TColor);
+begin
+  if FColor=AValue then Exit;
+  FColor:=AValue;
+  DoChanged;
+end;
+
+procedure TLuiCanvas.DoChanged;
+begin
+  if assigned(FOnchange) then
+     FOnchange(self);
+end;
+
+constructor TLuiCanvas.Create;
+begin
+
+end;
 
 { TLuiWidget }
 
@@ -257,9 +348,35 @@ begin
         Proc(Components[i]);
 end;
 
+procedure TLuiWidget.HandlePaint;
+begin
+   with Canvas do
+  begin
+      // fill background
+      //Brush.Style:=bsSolid;
+      //Brush.Color:=TColor($FF0000);
+      Color := clLtGray;
+      FillRect(0,0,Width,Height);
+      // outer frame
+      //Pen.Color:=clRed;
+      Color:=clFuchsia;
+      Rectangle(0,0,Width,Height);
+      // inner frame
+      {if AcceptChildrenAtDesignTime then begin
+        Pen.Color:=clMaroon;
+        Rectangle(BorderLeft-1,BorderTop-1,
+                  Width-BorderRight+1,
+                  Height-BorderBottom+1);
+      end;}
+      // caption
+      //TextOut(5,2,Caption);
+  end;
+end;
+
 constructor TLuiWidget.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  FCanvas := LuiCanvasCreatorProc();
   FChilds:=TFPList.Create;
   FBorderLeft:=5;
   FBorderRight:=5;
@@ -320,6 +437,39 @@ begin
     Designer.InvalidateRect(Self,ARect,Erase);
 end;
 
+procedure TLuiForm.HandlePaint;
+begin
+  with Canvas do
+  begin
+      // fill background
+      //Brush.Style:=bsSolid;
+      //Brush.Color:=TColor($FF0000);
+      Color := clGray;
+      Color := clMedGray;
+      FillRect(0,0,Width,Height);
+      // outer frame
+      //Pen.Color:=clRed;
+      //Color:=clRed;
+      //Rectangle(0,0,Width,Height);
+
+
+      // inner frame
+      {Color := clWhite;
+      FillRect(BorderLeft-1,BorderTop-1,
+                  Width-BorderRight+1,
+                  Height-BorderBottom+1);}
+
+      //if AcceptChildrenAtDesignTime then begin
+        Color:=clMaroon;
+        Rectangle(BorderLeft-1,BorderTop-1,
+                  Width-BorderRight+1,
+                  Height-BorderBottom+1);
+      //end;
+      // caption
+      //TextOut(5,2,Caption);
+  end;
+end;
+
 constructor TLuiForm.Create(AOwner: TComponent);
 begin
   CreateNew(AOwner);
@@ -344,5 +494,14 @@ begin
   FAcceptChildrenAtDesignTime:=false;
 end;
 
+{ Canvas Intercept }
+
+function ALuiCanvasCreator():TLuiCanvas;
+begin
+  result := TLuiCanvas.create();
+end;
+
+initialization
+  LuiCanvasCreatorProc := @ALuiCanvasCreator;
 end.
 

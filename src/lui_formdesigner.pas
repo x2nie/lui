@@ -33,7 +33,7 @@ interface
 
 uses
   LCLProc, LCLType, Classes, SysUtils, FormEditingIntf, LCLIntf, Graphics,
-  ProjectIntf, Lui_beta;
+  ProjectIntf, Lui_beta, lui_design_canvas;
 
 type
 
@@ -83,13 +83,22 @@ procedure Register;
 
 implementation
 
+uses ComponentEditors;
+
 procedure Register;
 begin
   FormEditingHook.RegisterDesignerMediator(TLuiWidgetMediator);
-  RegisterComponents('LUI',[TLuiButton,TLuiGroupBox]);
+  RegisterComponents('LUI',[TLuiButton,TLuiGroupBox, Lui_beta.TButton]);
   RegisterProjectFileDescriptor(TFileDescPascalUnitWithMyForm.Create,
                                 FileDescGroupName);
+
+  {$IFDEF COMPONENT_FACTORY}
+  RegisterComponentFactory('LUI', [TLuiWidget]);
+  {$ENDIF}
 end;
+
+type
+    TLuiWidgetAccess = class(TLuiWIdget);
 
 { TLuiWidgetMediator }
 
@@ -201,7 +210,15 @@ procedure TLuiWidgetMediator.Paint;
     i: Integer;
     Child: TLuiWidget;
   begin
+    TLuiDsgnCanvas(Awidget.Canvas).LclCanvas := LCLForm.Canvas;
+    try
+      TLuiWidgetAccess(Awidget).HandlePaint();
+    finally
+      TLuiDsgnCanvas(Awidget.Canvas).LclCanvas := nil;
+    end;
+
     with LCLForm.Canvas do begin
+      {
       // fill background
       Brush.Style:=bsSolid;
       Brush.Color:=clLtGray;
@@ -216,6 +233,7 @@ procedure TLuiWidgetMediator.Paint;
                   AWidget.Width-AWidget.BorderRight+1,
                   AWidget.Height-AWidget.BorderBottom+1);
       end;
+      }
       // caption
       TextOut(5,2,AWidget.Caption);
       // children

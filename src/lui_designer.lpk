@@ -7,7 +7,7 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="lib/"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -19,9 +19,20 @@
           <OptimizationLevel Value="0"/>
         </Optimizations>
       </CodeGeneration>
+      <Linking>
+        <Debugging>
+          <DebugInfoType Value="dsDwarf3"/>
+        </Debugging>
+      </Linking>
+      <Other>
+        <ConfigFile>
+          <CustomConfigFile Value="True"/>
+          <ConfigFilePath Value="~/.fpc.cfg"/>
+        </ConfigFile>
+      </Other>
     </CompilerOptions>
     <Version Minor="1"/>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
         <Filename Value="README.txt"/>
         <Type Value="Text"/>
@@ -31,6 +42,10 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="Lui_FormDesigner"/>
       </Item2>
+      <Item3>
+        <Filename Value="lui_design_canvas.pas"/>
+        <UnitName Value="lui_design_canvas"/>
+      </Item3>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="3">
